@@ -34,33 +34,41 @@ class PartyMember{
     
     this.anim++;
     
-    let anim = this.anim % 40;
-    let anim2 = (this.anim+20) % 40;
-    
-    if (turn == this.slot){
-      ctx.fillStyle = this.color;
-      ctx.fillRect(x - 2, y - 2, 216, 37);
-      
-      ctx.fillRect(x - 1, this.y, 6, 33);
-      ctx.fillRect(x + 208, this.y, 6, 33);
-      
-      ctx.globalAlpha = (1 - anim/40);
-      ctx.fillRect(Math.floor(x - 2 - (1.001 ^ -anim)), this.y, 4, 33);
-      ctx.fillRect(Math.floor(x + 208 + (1.001 ^ -anim)), this.y, 4, 33);
-      ctx.globalAlpha = 1;
-      
-      ctx.globalAlpha = (1 - anim2/40);
-      ctx.fillRect(Math.floor(x - 2 - (1.0001 ^ -anim2)), this.y, 4, 33);
-      ctx.fillRect(Math.floor(x + 208 + (1.0001 ^ -anim2)), this.y, 4, 33);
-      ctx.globalAlpha = 1;
-    }
-    
-    this.ease();
+    let anim = [
+      this.anim % 60,
+      (this.anim+20) % 60,
+      (this.anim+40) % 60,
+      ];
     
     if (this.easing){
       this.drawOptions()
     }
-    ctx.drawImage(sprites.hud, 0, 33 * this.character, 212, 33, 1 + x, y, 211, 33);
+    
+    if (turn == this.slot){
+      ctx.fillStyle = this.color;
+      ctx.fillRect(x, y - 2, 214, 37);
+      
+      ctx.fillRect(x - 0, this.y, 2, 33);
+      ctx.fillRect(x + 212, this.y, 2, 33);
+      
+      for (let i = 0; i < 3; i++){
+        
+        ctx.globalAlpha = (1 - (anim[i] - 30)/30);
+        
+        if (anim[i] < 30) ctx.globalAlpha = 1;
+        
+        ctx.fillRect(Math.floor(x - 0 + (1.1 ** (anim[i] - 26))), this.y, 2, 33);
+        ctx.fillRect(Math.floor(x + 213 - (1.1 ** (anim[i] - 26))), this.y, 2, 33);
+        ctx.globalAlpha = 1;
+      }
+    }
+    
+    this.ease();
+    
+    ctx.drawImage(sprites.hud, 0, 33 * this.character, 210, 33, 2 + x, y, 210, 33);
+    
+    // Draws icon over face.
+    if (turn > this.slot) ctx.drawImage(sprites.hud, 0 + this.menuoption * 46, 99 + 33 * this.character, 46, 33, 2 + x, y, 46, 33);
     
     // Red HP bar behind the colored bar to show lost hp.
     ctx.fillStyle = "#800000";
@@ -88,7 +96,7 @@ class PartyMember{
   ease(){
     if (turn == this.slot) {
       
-      this.easing += 0.1 + this.easing*0.01;
+      this.easing += 0.1 + this.easing*0.016;
       
       if (this.easing > 1) this.easing = 1;
       
@@ -96,7 +104,7 @@ class PartyMember{
     
     else {
       
-      this.easing -= 0.1 + this.easing*0.3;
+      this.easing -= 0.14 + this.easing*0.4;
       
       if (this.easing < 0) this.easing = 0;
     }
@@ -120,7 +128,7 @@ class PartyMember{
       if (this.menuoption == i) y_offset = 0;
       
       ctx.fillRect(x + 17 + (i * 35), this.y + 6, 27, 22);
-      ctx.drawImage(sprites.hud, 212 + (sprite*31), y_offset, 31, 32, x + 15 + (i * 35), this.y + 4, 31, 32);
+      ctx.drawImage(sprites.hud, 211 + (sprite*31), y_offset, 31, 32, x + 15 + (i * 35), this.y + 4, 31, 32);
       
     }
   }
