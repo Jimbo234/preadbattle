@@ -40,10 +40,6 @@ class PartyMember{
       (this.anim+40) % 60,
       ];
     
-    if (this.easing){
-      this.drawOptions()
-    }
-    
     if (turn == this.slot){
       ctx.fillStyle = this.color;
       ctx.fillRect(x, y - 2, 214, 37);
@@ -61,6 +57,10 @@ class PartyMember{
         ctx.fillRect(Math.floor(x + 213 - (1.1 ** (anim[i] - 26))), this.y, 2, 33);
         ctx.globalAlpha = 1;
       }
+    }
+    
+    if (this.easing){
+      this.drawOptions();
     }
     
     this.ease();
