@@ -8,10 +8,15 @@ function init() {
   
   turn = 0;
   
+  submenu = 0;
+  selector = 0;
+  
+  inventory = [0, 2, 3, 4, 0, 6, 8, 0, 9, 2, 7, 10];
+  
   party = [
-    new PartyMember(0, 144, "#2BF1F4", 0),
-    new PartyMember(1, 212, "#FF00FF", 1),
-    new PartyMember(2, 121, "#00FF00", 2),
+    new PartyMember(0, 193, "#2BF1F4", 0),
+    new PartyMember(1, 296, "#FF00FF", 1),
+    new PartyMember(2, 167, "#00FF00", 2),
   ];
   
   sprites = {
@@ -26,22 +31,7 @@ function init() {
 
 function update() {
   manageInput();
-  
-  if (turn < 3){
-    if (keypress.right) party[turn].menuoption++;
-    if (keypress.left) party[turn].menuoption--;
-    
-    if (party[turn].menuoption > 4) party[turn].menuoption = 0;
-    if (party[turn].menuoption < 0) party[turn].menuoption = 4;
-    
-    if (keypress.x && turn>0){
-      turn--;
-    }
-    
-    if (keypress.z){
-      turn++;
-    }
-  }
+  manageMenu();
   
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   
@@ -52,7 +42,6 @@ function update() {
   ctx.fillRect(0, 326, 640, 3);
   ctx.fillRect(0, 362, 640, 3);
   
-  //ctx.drawImage(document.getElementById("demo"), 0, 0);
   
   ctx.save();
   ctx.scale(-1, 1);
@@ -62,5 +51,11 @@ function update() {
   textbox.draw();
   party.forEach(member => member.draw());
   
-  requestAnimationFrame(update);
+  //ctx.globalAlpha = 0.5;
+  //ctx.drawImage(document.getElementById("demo"), -5, 0, 645, 480);
+  //ctx.globalAlpha = 1;
+  
+  requestAnimationFrame(update)
+  
+  
 }
